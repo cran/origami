@@ -12,7 +12,7 @@ make_folds(n = NULL, fold_fun = folds_vfold, cluster_ids = NULL,
 cross-validate over, or an object from which to guess the number of
 observations; can also be computed from strata_ids or cluster_ids.}
 
-\item{fold_fun}{- A function indicating the cross-validation scheme to use. 
+\item{fold_fun}{- A function indicating the cross-validation scheme to use.
 See \code{\link{fold_funs}} for a list of possibilities.}
 
 \item{cluster_ids}{- a vector of cluster ids. Clusters are treated as a unit
@@ -26,14 +26,15 @@ distribution in the training and validation sets.}
 \item{...}{other arguments to be passed to \code{fold_fun}.}
 }
 \value{
-A list of folds objects. Each fold consists of a list with a \code{training} index vector, 
-        a \code{validation} index vector, and a \code{fold_index} (its order in the list of folds).
+A list of folds objects. Each fold consists of a list with a
+ \code{training} index vector, a \code{validation} index vector, and a
+ \code{fold_index} (its order in the list of folds).
 }
 \description{
 Generates a list of folds for a variety of cross-validation schemes.
 }
 \seealso{
 Other fold generation functions: \code{\link{fold_from_foldvec}},
-  \code{\link{fold_funs}},
+  \code{\link{fold_funs}}, \code{\link{folds2foldvec}},
   \code{\link{make_repeated_folds}}
 }
