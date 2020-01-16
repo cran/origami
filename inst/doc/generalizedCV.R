@@ -1,15 +1,15 @@
-## ----load_data-----------------------------------------------------------
+## ----load_data----------------------------------------------------------------
 data(mtcars)
 head(mtcars)
 
-## ----linear_mod----------------------------------------------------------
+## ----linear_mod---------------------------------------------------------------
 lm_mod <- lm(mpg ~ ., data = mtcars)
 summary(lm_mod)
 
-## ----get_naive_error-----------------------------------------------------
+## ----get_naive_error----------------------------------------------------------
 err <- mean(resid(lm_mod)^2)
 
-## ----define_fun_cv_lm----------------------------------------------------
+## ----define_fun_cv_lm---------------------------------------------------------
 cv_lm <- function(fold, data, reg_form) {
   # get name and index of outcome variable from regression formula
   out_var <- as.character(unlist(str_split(reg_form, " "))[1])
@@ -29,24 +29,24 @@ cv_lm <- function(fold, data, reg_form) {
   return(out)
 }
 
-## ----load_pkgs-----------------------------------------------------------
+## ----load_pkgs----------------------------------------------------------------
 library(origami)
 library(stringr) # used in defining the cv_lm function above
 
-## ----cv_lm_resub---------------------------------------------------------
+## ----cv_lm_resub--------------------------------------------------------------
 # resubstitution estimate
 resub <- make_folds(mtcars, fold_fun = folds_resubstitution)[[1]]
 resub_results <- cv_lm(fold = resub, data = mtcars, reg_form = "mpg ~ .")
 mean(resub_results$SE)
 
-## ----cv_lm_cross_valdate-------------------------------------------------
+## ----cv_lm_cross_valdate------------------------------------------------------
 # cross-validated estimate
 folds <- make_folds(mtcars)
 cvlm_results <- cross_validate(cv_fun = cv_lm, folds = folds, data = mtcars,
                                reg_form = "mpg ~ .")
 mean(cvlm_results$SE)
 
-## ----cv_fun_randomForest-------------------------------------------------
+## ----cv_fun_randomForest------------------------------------------------------
 cv_rf <- function(fold, data, reg_form) {
   # get name and index of outcome variable from regression formula
   out_var <- as.character(unlist(str_split(reg_form, " "))[1])
@@ -66,18 +66,18 @@ cv_rf <- function(fold, data, reg_form) {
   return(out)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(randomForest)
 folds <- make_folds(mtcars)
 cvrf_results <- cross_validate(cv_fun = cv_rf, folds = folds, data = mtcars,
                                reg_form = "mpg ~ .")
 mean(cvrf_results$SE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 data(AirPassengers)
 print(AirPassengers)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(forecast)
 folds = make_folds(AirPassengers, fold_fun=folds_rolling_origin,
                    first_window = 36, validation_size = 24)
@@ -114,6 +114,6 @@ mses = cross_validate(cv_fun = cv_forecasts, folds = folds,
                       data = AirPassengers)$mse
 colMeans(mses[, c("arima", "stl")])
 
-## ----sessionInfo, echo=FALSE---------------------------------------------
+## ----sessionInfo, echo=FALSE--------------------------------------------------
 sessionInfo()
 
