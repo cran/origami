@@ -36,7 +36,7 @@ get_from_fold <- function(component) {
       fold <- get("fold", envir = parent.frame())
     }
 
-    if (class(fold) != "fold") {
+    if (!inherits(fold,"fold")) {
       stop("invalid fold")
     }
 
